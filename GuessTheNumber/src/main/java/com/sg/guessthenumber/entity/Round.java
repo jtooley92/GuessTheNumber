@@ -13,9 +13,11 @@ import java.time.LocalDateTime;
  */
 public class Round {
     private int roundId;
-    private Guess guess;
     private LocalDateTime time;
-    private String guessResult;
+    private int numberGuess;
+    private String guessResultExact;
+    private String guessResultPartial;
+    
 
     public int getRoundId() {
         return roundId;
@@ -23,14 +25,6 @@ public class Round {
 
     public void setRoundId(int roundId) {
         this.roundId = roundId;
-    }
-
-    public Guess getGuess() {
-        return guess;
-    }
-
-    public void setGuess(Guess guess) {
-        this.guess = guess;
     }
 
     public LocalDateTime getTime() {
@@ -41,13 +35,28 @@ public class Round {
         this.time = time;
     }
 
-    public String getGuessResult() {
-        return guessResult;
+    public int getNumberGuess() {
+        return numberGuess;
     }
 
-    public void setGuessResult(String guessResult) {
-        this.guessResult = guessResult;
+    public void setNumberGuess(int numberGuess) {
+        this.numberGuess = numberGuess;
     }
-    
-    
+
+    public String getGuessResultExact() {
+        return guessResultExact;
+    }
+
+    public void setGuessResultExact(String guessResultExact) {
+        this.guessResultExact = guessResultExact;
+    }
+
+    public String getGuessResultPartial() {
+        return guessResultPartial;
+    }
+
+    public void setGuessResultPartial(String guessResultPartial) {
+        this.guessResultPartial = guessResultPartial;
+    }
+      
 }

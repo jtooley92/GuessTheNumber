@@ -13,9 +13,9 @@ import java.util.List;
  * @author Jtooleyful
  */
 public interface GameDao {
-    Game addGame();
+    Game addGame(Game game);
     Game getGame(int gameId);
     List<Game> getAllGames();
-    Game updateStatus(int gameId);
+    Game updateStatus(Game game);
     
 }

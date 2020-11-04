@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class Game {
     private int gameId;
-    private int generatedNumber;
-    private List<Round> rounds;
+    private String generatedNumber;
+    private Round round;
     private boolean status;
 
     public int getGameId() {
@@ -25,20 +25,20 @@ public class Game {
         this.gameId = gameId;
     }
 
-    public int getGeneratedNumber() {
+    public String getGeneratedNumber() {
         return generatedNumber;
     }
 
-    public void setGeneratedNumber(int generatedNumber) {
+    public void setGeneratedNumber(String generatedNumber) {
         this.generatedNumber = generatedNumber;
     }
 
-    public List<Round> getRounds() {
-        return rounds;
+    public Round getRound() {
+        return round;
     }
 
-    public void setRounds(List<Round> rounds) {
-        this.rounds = rounds;
+    public void setRound(Round round) {
+        this.round = round;
     }
 
     public boolean isStatus() {
