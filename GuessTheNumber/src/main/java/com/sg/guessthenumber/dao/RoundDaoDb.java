@@ -9,6 +9,7 @@ import com.sg.guessthenumber.entity.Game;
 import com.sg.guessthenumber.entity.Round;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,29 +22,44 @@ import org.springframework.jdbc.core.RowMapper;
 public class RoundDaoDb implements RoundDao {
 
     @Autowired
-    private JdbcTemplate jdbc;
+    JdbcTemplate jdbc;
 
     @Override
-    public Round addRound() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Round addRound(Round round) {
+        final String INSERT_ROUND = "INSERT INTO Round(RoundId, Time, NumberGuess, GuessResultExact,GuessResultPartial) VALUES(?,?,?,?,?)";
+        jdbc.update(INSERT_ROUND,
+                round.getRoundId(),
+                Timestamp.valueOf(round.getTime()),
+                round.getNumberGuess(),
+                round.getGuessResultExact(),
+                round.getGuessResultPartial());
+        int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        round.setRoundId(newId);
+
+        return round;
     }
 
     @Override
     public List<Round> getRoundsByGameId(int gameId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String GET_ROUNDS_BY_GAMEID = "SELECT * FROM round r"
+                + "JOIN Game g ON r.GameId = g.GameId WHERE r.GameId = ?";
+        
+       return jdbc.query(GET_ROUNDS_BY_GAMEID, new RoundMapper(), gameId);
+        
     }
-    
-     public static final class RoundMapper implements RowMapper<Round>{
-         @Override
-         public Round mapRow(ResultSet rs, int index) throws SQLException{
-             Round round = new Round();
-             round.setRoundId(rs.getInt("RoundId"));
-             round.setNumberGuess(rs.getInt("NumberGuess"));
-             round.setGuessResultExact(rs.getString("GuessResultExact"));
-             round.setGuessResultPartial(rs.getString("GuessResultPartial"));
-             round.setTime(rs.getTimestamp("Time").toLocalDateTime());
-             
-             return round;
-         }
-}
+
+    public static final class RoundMapper implements RowMapper<Round> {
+
+        @Override
+        public Round mapRow(ResultSet rs, int index) throws SQLException {
+            Round round = new Round();
+            round.setRoundId(rs.getInt("RoundId"));
+            round.setNumberGuess(rs.getString("NumberGuess"));
+            round.setGuessResultExact(rs.getString("GuessResultExact"));
+            round.setGuessResultPartial(rs.getString("GuessResultPartial"));
+            round.setTime(rs.getTimestamp("Time").toLocalDateTime());
+
+            return round;
+        }
+    }
 }

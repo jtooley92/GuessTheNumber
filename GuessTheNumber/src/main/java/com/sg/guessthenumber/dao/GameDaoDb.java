@@ -79,7 +79,7 @@ private final JdbcTemplate jdbc;
         public Game mapRow(ResultSet rs, int index) throws SQLException {
             Game game = new Game();
             game.setGameId(rs.getInt("GameId"));
-            game.setGeneratedNumber(rs.getInt("GeneratedNumber"));
+            game.setGeneratedNumber(rs.getString("GeneratedNumber"));
             game.setStatus(rs.getBoolean("Status"));
             
 

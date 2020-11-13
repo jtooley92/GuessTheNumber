@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class Round {
     private int roundId;
     private LocalDateTime time;
-    private int numberGuess;
+    private String numberGuess;
     private String guessResultExact;
     private String guessResultPartial;
     
@@ -35,11 +35,11 @@ public class Round {
         this.time = time;
     }
 
-    public int getNumberGuess() {
+    public String getNumberGuess() {
         return numberGuess;
     }
 
-    public void setNumberGuess(int numberGuess) {
+    public void setNumberGuess(String numberGuess) {
         this.numberGuess = numberGuess;
     }
 
