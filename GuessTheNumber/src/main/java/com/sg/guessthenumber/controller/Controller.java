@@ -7,7 +7,12 @@ package com.sg.guessthenumber.controller;
 
 import com.sg.guessthenumber.dao.GameDao;
 import com.sg.guessthenumber.dao.GameDaoDb;
+import com.sg.guessthenumber.dao.RoundDao;
 import com.sg.guessthenumber.entity.Game;
+import com.sg.guessthenumber.entity.Round;
+import com.sg.guessthenumber.service.GuessTheNumberService;
+import com.sg.guessthenumber.service.GuessTheNumberServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,27 +23,30 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Jtooleyful
  */
 @RestController
-@RequestMapping("/api/todo")
+@RequestMapping("/game")
 public class Controller {
-    private final GameDao dao;
-
-    public Controller(GameDao dao) {
-        this.dao = dao;
+    private GuessTheNumberService service;
+    
+    @Autowired
+    public Controller(GuessTheNumberService service) {
+        this.service = service;
     }
     
     Game game = new Game();
     
     @PostMapping
-    public Game all(){
-        game.setGeneratedNumber("0123");
-        game.setStatus(false);
-        System.out.println(dao.addGame(game));
+    public Game addGame(){
+        service.addGame(game);
         
         return game;
     }
     
-    @GetMapping
-    public String hi(){
-        return "hi";
+    @PostMapping("/round")
+    public Round addRound(int gameId, String guess){
+        
+        Round round = service.addRound(gameId, guess);
+        
+        return round;
     }
+    
 }

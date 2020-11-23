@@ -49,7 +49,7 @@ private final JdbcTemplate jdbc;
         try{
             final String SELECT_GAME_BY_ID = "SELECT* FROM Game WHERE GameId = ?";
             Game game = jdbc.queryForObject(SELECT_GAME_BY_ID, new GameMapper(), gameId);
-            game.setRound(getRoundsForGame(game));
+            game.setRounds(getRoundsForGame(game));
             
             return game;
         } catch (DataAccessException e) {
@@ -67,7 +67,8 @@ private final JdbcTemplate jdbc;
     }
 
     @Override
-    public Game updateStatus(Game game) {
+    public Game updateStatus(int gameId) {
+        Game game = new Game( gameId);
         game.setStatus(false);
         
         return game;
@@ -88,16 +89,16 @@ private final JdbcTemplate jdbc;
 
     }
 
-    private Round getRoundsForGame(Game game) {
+    private List<Round> getRoundsForGame(Game game) {
         final String SELECT_ROUNDS_FOR_GAME = "SELECT r.* FROM Round r"
-                + "JOIN Game g ON r.GameId = g. GameId WHERE r.GameId = ?";
+                + " JOIN Game g ON r.GameId = g.GameId WHERE r.GameId = ?";
 
-        return jdbc.queryForObject(SELECT_ROUNDS_FOR_GAME, new RoundMapper(), game.getGameId());
+        return jdbc.query(SELECT_ROUNDS_FOR_GAME, new RoundMapper(), game.getGameId());
     }
     
     private void addRoundToGames(List<Game> games){
         for(Game game: games){
-            game.setRound(getRoundsForGame(game));
+            game.setRounds(getRoundsForGame(game));
         }
     }
 }

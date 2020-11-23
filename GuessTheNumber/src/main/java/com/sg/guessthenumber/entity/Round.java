@@ -5,6 +5,7 @@
  */
 package com.sg.guessthenumber.entity;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
  */
 public class Round {
     private int roundId;
-    private LocalDateTime time;
+    private Timestamp time;
     private String numberGuess;
     private String guessResultExact;
     private String guessResultPartial;
@@ -27,11 +28,11 @@ public class Round {
         this.roundId = roundId;
     }
 
-    public LocalDateTime getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 

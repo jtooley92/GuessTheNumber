@@ -14,8 +14,16 @@ import java.util.List;
 public class Game {
     private int gameId;
     private String generatedNumber;
-    private Round round;
+    private List<Round> round;
     private boolean status;
+    
+     public Game(){
+         
+     }
+    
+    public Game(int gameId){
+    this.gameId = gameId; 
+}
 
     public int getGameId() {
         return gameId;
@@ -33,11 +41,11 @@ public class Game {
         this.generatedNumber = generatedNumber;
     }
 
-    public Round getRound() {
+    public List<Round> getRounds() {
         return round;
     }
 
-    public void setRound(Round round) {
+    public void setRounds(List<Round> round) {
         this.round = round;
     }
 

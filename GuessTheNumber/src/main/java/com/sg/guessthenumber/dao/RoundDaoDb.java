@@ -14,25 +14,32 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Jtooleyful
  */
+@Repository
 public class RoundDaoDb implements RoundDao {
 
+    private final JdbcTemplate jdbc;
+    
     @Autowired
-    JdbcTemplate jdbc;
+     public RoundDaoDb(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
 
     @Override
-    public Round addRound(Round round) {
-        final String INSERT_ROUND = "INSERT INTO Round(RoundId, Time, NumberGuess, GuessResultExact,GuessResultPartial) VALUES(?,?,?,?,?)";
+    public Round addRound(Round round, int gameId) {
+        final String INSERT_ROUND = "INSERT INTO Round(RoundId, Time, NumberGuess, GuessResultExact, GuessResultPartial, GameId) VALUES(?,?,?,?,?,?)";
         jdbc.update(INSERT_ROUND,
                 round.getRoundId(),
-                Timestamp.valueOf(round.getTime()),
+                round.getTime(),
                 round.getNumberGuess(),
                 round.getGuessResultExact(),
-                round.getGuessResultPartial());
+                round.getGuessResultPartial(),
+                gameId);
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         round.setRoundId(newId);
 
@@ -57,7 +64,7 @@ public class RoundDaoDb implements RoundDao {
             round.setNumberGuess(rs.getString("NumberGuess"));
             round.setGuessResultExact(rs.getString("GuessResultExact"));
             round.setGuessResultPartial(rs.getString("GuessResultPartial"));
-            round.setTime(rs.getTimestamp("Time").toLocalDateTime());
+            round.setTime(rs.getTimestamp("Time"));
 
             return round;
         }

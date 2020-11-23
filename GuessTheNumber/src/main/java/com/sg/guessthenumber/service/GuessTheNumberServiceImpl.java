@@ -9,14 +9,20 @@ import com.sg.guessthenumber.dao.GameDao;
 import com.sg.guessthenumber.dao.RoundDao;
 import com.sg.guessthenumber.entity.Game;
 import com.sg.guessthenumber.entity.Round;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Jtooleyful
  */
+@Component
 public class GuessTheNumberServiceImpl implements GuessTheNumberService {
 
     GameDao gameDao;
@@ -26,6 +32,7 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
 
     }
 
+    @Autowired
     public GuessTheNumberServiceImpl(GameDao gameDao, RoundDao roundDao) {
         this.gameDao = gameDao;
         this.roundDao = roundDao;
@@ -33,8 +40,6 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
 
     @Override
     public Game addGame(Game game) {
-        gameDao.addGame(game);
-
         List<Integer> numbers = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             numbers.add(i);
@@ -47,8 +52,8 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
             result += numbers.get(i).toString();
         }
         game.setGeneratedNumber(result);
-        addRound(game.getRound());
-        updateStatus(game);
+        game.setStatus(false);
+        gameDao.addGame(game);
         return game;
     }
 
@@ -68,10 +73,11 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
     }
 
     @Override
-    public Game updateStatus(Game game) {
-        gameDao.updateStatus(game);
+    public Game updateStatus(int gameId, String guess) {
+        Game game = gameDao.getGame(gameId);
+        gameDao.updateStatus(gameId);
 
-        if (game.getGeneratedNumber().equals(game.getRound().getNumberGuess())) {
+        if (game.getGeneratedNumber().equals(guess)) {
             game.setStatus(true);
         }
 
@@ -79,8 +85,11 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
     }
 
     @Override
-    public Round addRound(Round round) {
-        round = roundDao.addRound(round);
+    public Round addRound(int gameId, String guess) {
+        Round round = new Round();
+
+        round = getResults(gameId, guess);
+        roundDao.addRound(round, gameId);
 
         return round;
     }
@@ -93,19 +102,39 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
     }
 
     @Override
-    public Round getResults(Game game) {
-        Round round = game.getRound();
+    public Round getResults(int gameId, String guess) {
+        Game game = gameDao.getGame(gameId);
+        Round round = new Round();
         String guessPart1 = game.getGeneratedNumber().substring(0, 1);
         String guessPart2 = game.getGeneratedNumber().substring(1, 2);
         String guessPart3 = game.getGeneratedNumber().substring(2, 3);
         String guessPart4 = game.getGeneratedNumber().substring(3, 4);
-        String roundPart1 = round.getNumberGuess().substring(0, 1);
-        String roundPart2 = round.getNumberGuess().substring(1, 2);
-        String roundPart3 = round.getNumberGuess().substring(2, 3);
-        String roundPart4 = round.getNumberGuess().substring(3, 4);
-        
-        
-        
-    return game.getRound();
+        String roundPart1 = guess.substring(0, 1);
+        String roundPart2 = guess.substring(1, 2);
+        String roundPart3 = guess.substring(2, 3);
+        String roundPart4 = guess.substring(3, 4);
+        String[] randomNumber = {guessPart1, guessPart2, guessPart3, guessPart4};
+        String[] prediction = {roundPart1, roundPart2, roundPart3, roundPart4};
+        int exactCounter = 0;
+        int partialCounter = 0;
+
+        for (int i = 0; i < randomNumber.length; i++) {
+            for (int j = 0; j < prediction.length; j++) {
+                if (randomNumber[i].equals(prediction[i])) {
+                    exactCounter++;
+                } else if (randomNumber[i].equals(prediction[j])) {
+                    partialCounter++;
+                }
+            }
+
+        }
+        round.setNumberGuess(guess);
+        round.setTime(Timestamp.valueOf(LocalDateTime.now()));
+        round.setGuessResultExact("e:" + exactCounter);
+        round.setGuessResultPartial("p:" + partialCounter);
+
+        updateStatus(gameId, guess);
+
+        return round;
     }
 }
