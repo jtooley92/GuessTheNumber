@@ -16,6 +16,5 @@ public interface GameDao {
     Game addGame(Game game);
     Game getGame(int gameId);
     List<Game> getAllGames();
-    Game updateStatus(int gameId);
-    
+    void updateStatus(Game game);
 }

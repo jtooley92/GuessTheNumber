@@ -72,16 +72,13 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
 
     }
 
-    @Override
-    public Game updateStatus(int gameId, String guess) {
-        Game game = gameDao.getGame(gameId);
-        gameDao.updateStatus(gameId);
-
-        if (game.getGeneratedNumber().equals(guess)) {
-            game.setStatus(true);
+    
+    private boolean updateStatus(int exactResults) {
+        
+        if (exactResults == 4){
+            return true;
         }
-
-        return game;
+        return false;
     }
 
     @Override
@@ -120,11 +117,12 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
 
         for (int i = 0; i < randomNumber.length; i++) {
             for (int j = 0; j < prediction.length; j++) {
-                if (randomNumber[i].equals(prediction[i])) {
-                    exactCounter++;
-                } else if (randomNumber[i].equals(prediction[j])) {
+                if (randomNumber[i].equals(prediction[j])) {
                     partialCounter++;
                 }
+            }
+            if (randomNumber[i].equals(prediction[i])) {
+                exactCounter++;
             }
 
         }
@@ -133,7 +131,8 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
         round.setGuessResultExact("e:" + exactCounter);
         round.setGuessResultPartial("p:" + partialCounter);
 
-        updateStatus(gameId, guess);
+        game.setStatus(updateStatus(exactCounter));
+        gameDao.updateStatus(game);
 
         return round;
     }

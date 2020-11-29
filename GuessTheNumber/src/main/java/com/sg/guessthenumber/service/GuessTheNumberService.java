@@ -17,7 +17,6 @@ public interface GuessTheNumberService {
     Game addGame(Game game);
     Game getGame(int gameId);
     List<Game> getAllGames();
-    Game updateStatus(int gameId, String guess);
     Round addRound(int gameId, String guess);
     List<Round> getRoundsByGameId(int gameId);
     Round getResults(int gameId, String guess);

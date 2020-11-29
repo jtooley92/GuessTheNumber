@@ -67,12 +67,14 @@ private final JdbcTemplate jdbc;
     }
 
     @Override
-    public Game updateStatus(int gameId) {
-        Game game = new Game( gameId);
-        game.setStatus(false);
-        
-        return game;
+    public void updateStatus(Game game) {
+        final String UPDATE_GAME = "UPDATE Game SET Status = ? WHERE GameId = ?";
+        jdbc.update(UPDATE_GAME,
+                game.getGameId(),
+                game.isStatus());
     }
+    
+
 
     private static final class GameMapper implements RowMapper<Game> {
 
@@ -101,4 +103,6 @@ private final JdbcTemplate jdbc;
             game.setRounds(getRoundsForGame(game));
         }
     }
+    
+    
 }
