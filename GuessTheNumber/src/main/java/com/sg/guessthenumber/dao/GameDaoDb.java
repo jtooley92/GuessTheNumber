@@ -70,8 +70,8 @@ private final JdbcTemplate jdbc;
     public void updateStatus(Game game) {
         final String UPDATE_GAME = "UPDATE Game SET Status = ? WHERE GameId = ?";
         jdbc.update(UPDATE_GAME,
-                game.getGameId(),
-                game.isStatus());
+                game.isStatus(),
+                game.getGameId());
     }
     
 

@@ -61,21 +61,31 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
     public Game getGame(int gameId) {
         Game game = gameDao.getGame(gameId);
 
+        if (game.isStatus() == false) {
+            game.setGeneratedNumber("****");
+        }
+
         return game;
     }
 
     @Override
     public List<Game> getAllGames() {
+
         List<Game> games = gameDao.getAllGames();
+
+        for (Game game : games) {
+            if (game.isStatus() == false) {
+                game.setGeneratedNumber("****");
+            }
+        }
 
         return games;
 
     }
 
-    
     private boolean updateStatus(int exactResults) {
-        
-        if (exactResults == 4){
+
+        if (exactResults == 4) {
             return true;
         }
         return false;
@@ -123,9 +133,15 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
             }
             if (randomNumber[i].equals(prediction[i])) {
                 exactCounter++;
+                
+                if (partialCounter > 0){
+                    partialCounter--;
+                }
             }
 
         }
+        
+        
         round.setNumberGuess(guess);
         round.setTime(Timestamp.valueOf(LocalDateTime.now()));
         round.setGuessResultExact("e:" + exactCounter);

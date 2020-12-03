@@ -49,7 +49,7 @@ public class RoundDaoDb implements RoundDao {
     @Override
     public List<Round> getRoundsByGameId(int gameId) {
         final String GET_ROUNDS_BY_GAMEID = "SELECT * FROM round r"
-                + "JOIN Game g ON r.GameId = g.GameId WHERE r.GameId = ?";
+                + " JOIN Game g ON r.GameId = g.GameId WHERE r.GameId = ?" + " ORDER BY Time ASC";
         
        return jdbc.query(GET_ROUNDS_BY_GAMEID, new RoundMapper(), gameId);
         
