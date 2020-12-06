@@ -6,6 +6,7 @@
 package com.sg.guessthenumber.entity;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -21,8 +22,10 @@ public class Game {
          
      }
     
-    public Game(int gameId){
-    this.gameId = gameId; 
+    public Game(String generatedNumber,List<Round> round, boolean status  ){
+    this.generatedNumber = generatedNumber;
+    this.round = round;
+    this.status = status;
 }
 
     public int getGameId() {
@@ -55,6 +58,48 @@ public class Game {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 83 * hash + this.gameId;
+        hash = 83 * hash + Objects.hashCode(this.generatedNumber);
+        hash = 83 * hash + Objects.hashCode(this.round);
+        hash = 83 * hash + (this.status ? 1 : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Game other = (Game) obj;
+        if (this.gameId != other.gameId) {
+            return false;
+        }
+        if (this.status != other.status) {
+            return false;
+        }
+        if (!Objects.equals(this.generatedNumber, other.generatedNumber)) {
+            return false;
+        }
+        if (!Objects.equals(this.round, other.round)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" + "gameId=" + gameId + ", generatedNumber=" + generatedNumber + ", round=" + round + ", status=" + status + '}';
     }
     
     

@@ -54,6 +54,7 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
         game.setGeneratedNumber(result);
         game.setStatus(false);
         gameDao.addGame(game);
+        game.setGeneratedNumber("****");
         return game;
     }
 
