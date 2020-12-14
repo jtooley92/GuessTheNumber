@@ -13,20 +13,26 @@ import java.util.Objects;
  * @author Jtooleyful
  */
 public class Game {
+
     private int gameId;
     private String generatedNumber;
     private List<Round> round;
     private boolean status;
-    
-     public Game(){
-         
-     }
-    
-    public Game(String generatedNumber,List<Round> round, boolean status  ){
-    this.generatedNumber = generatedNumber;
-    this.round = round;
-    this.status = status;
-}
+
+    public Game() {
+
+    }
+
+    public Game(String generatedNumber, boolean status) {
+        this.generatedNumber = generatedNumber;
+        this.status = status;
+    }
+
+    public Game(String generatedNumber, List<Round> round, boolean status) {
+        this.generatedNumber = generatedNumber;
+        this.round = round;
+        this.status = status;
+    }
 
     public int getGameId() {
         return gameId;
@@ -63,10 +69,10 @@ public class Game {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 83 * hash + this.gameId;
-        hash = 83 * hash + Objects.hashCode(this.generatedNumber);
-        hash = 83 * hash + Objects.hashCode(this.round);
-        hash = 83 * hash + (this.status ? 1 : 0);
+        hash = 97 * hash + this.gameId;
+        hash = 97 * hash + Objects.hashCode(this.generatedNumber);
+        hash = 97 * hash + Objects.hashCode(this.round);
+        hash = 97 * hash + (this.status ? 1 : 0);
         return hash;
     }
 
@@ -101,6 +107,6 @@ public class Game {
     public String toString() {
         return "Game{" + "gameId=" + gameId + ", generatedNumber=" + generatedNumber + ", round=" + round + ", status=" + status + '}';
     }
-    
-    
+
+
 }

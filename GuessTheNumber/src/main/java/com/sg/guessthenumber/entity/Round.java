@@ -24,8 +24,7 @@ public class Round {
         
     }
     
-    public Round(int roundId, Timestamp time, String numberGuess, String guessResultExact, String guessResultPartial ){
-        this.roundId = roundId;
+    public Round( Timestamp time, String numberGuess, String guessResultExact, String guessResultPartial ){
         this.time = time;
         this.numberGuess = numberGuess;
         this.guessResultExact = guessResultExact;
@@ -74,12 +73,12 @@ public class Round {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 79 * hash + this.roundId;
-        hash = 79 * hash + Objects.hashCode(this.time);
-        hash = 79 * hash + Objects.hashCode(this.numberGuess);
-        hash = 79 * hash + Objects.hashCode(this.guessResultExact);
-        hash = 79 * hash + Objects.hashCode(this.guessResultPartial);
+        int hash = 3;
+        hash = 59 * hash + this.roundId;
+        hash = 59 * hash + Objects.hashCode(this.time);
+        hash = 59 * hash + Objects.hashCode(this.numberGuess);
+        hash = 59 * hash + Objects.hashCode(this.guessResultExact);
+        hash = 59 * hash + Objects.hashCode(this.guessResultPartial);
         return hash;
     }
 
@@ -117,6 +116,6 @@ public class Round {
     public String toString() {
         return "Round{" + "roundId=" + roundId + ", time=" + time + ", numberGuess=" + numberGuess + ", guessResultExact=" + guessResultExact + ", guessResultPartial=" + guessResultPartial + '}';
     }
-      
+
     
 }

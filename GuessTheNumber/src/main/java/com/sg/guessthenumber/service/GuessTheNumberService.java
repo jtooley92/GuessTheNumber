@@ -5,6 +5,7 @@
  */
 package com.sg.guessthenumber.service;
 
+import com.sg.guessthenumber.dao.GuessTheNumberDaoException;
 import com.sg.guessthenumber.entity.Game;
 import com.sg.guessthenumber.entity.Round;
 import java.util.List;
@@ -17,7 +18,7 @@ public interface GuessTheNumberService {
     Game addGame(Game game);
     Game getGame(int gameId);
     List<Game> getAllGames();
-    Round addRound(int gameId, String guess);
+    Round addRound(int gameId, String guess) throws GuessTheNumberDaoException;
     List<Round> getRoundsByGameId(int gameId);
     Round getResults(int gameId, String guess);
 }

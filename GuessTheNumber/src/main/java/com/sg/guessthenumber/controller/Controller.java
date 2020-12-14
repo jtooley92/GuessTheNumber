@@ -7,6 +7,7 @@ package com.sg.guessthenumber.controller;
 
 import com.sg.guessthenumber.dao.GameDao;
 import com.sg.guessthenumber.dao.GameDaoDb;
+import com.sg.guessthenumber.dao.GuessTheNumberDaoException;
 import com.sg.guessthenumber.dao.RoundDao;
 import com.sg.guessthenumber.entity.Game;
 import com.sg.guessthenumber.entity.Round;
@@ -48,7 +49,7 @@ public class Controller {
     }
     
     @PostMapping("/round{gameId}")
-    public Round addRound(@RequestBody Round round, @PathVariable int gameId){
+    public Round addRound(@RequestBody Round round, @PathVariable int gameId) throws GuessTheNumberDaoException{
         
          round = service.addRound(gameId, round.getNumberGuess());
         

@@ -6,6 +6,7 @@
 package com.sg.guessthenumber.service;
 
 import com.sg.guessthenumber.dao.GameDao;
+import com.sg.guessthenumber.dao.GuessTheNumberDaoException;
 import com.sg.guessthenumber.dao.RoundDao;
 import com.sg.guessthenumber.entity.Game;
 import com.sg.guessthenumber.entity.Round;
@@ -93,17 +94,25 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
     }
 
     @Override
-    public Round addRound(int gameId, String guess) {
+    public Round addRound(int gameId, String guess) throws GuessTheNumberDaoException{
+        
+        if(gameDao.getGame(gameId).isStatus() == false){
         Round round = new Round();
 
         round = getResults(gameId, guess);
         roundDao.addRound(round, gameId);
 
         return round;
+        } else{
+            throw new GuessTheNumberDaoException("Game is complete round cannot be played");
+        }
+        
     }
 
     @Override
     public List<Round> getRoundsByGameId(int gameId) {
+        
+        
         List<Round> rounds = roundDao.getRoundsByGameId(gameId);
 
         return rounds;
@@ -141,10 +150,11 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
             }
 
         }
-        
+        Timestamp time = Timestamp.valueOf(LocalDateTime.now());
+        time.setNanos(0);
         
         round.setNumberGuess(guess);
-        round.setTime(Timestamp.valueOf(LocalDateTime.now()));
+        round.setTime(time);
         round.setGuessResultExact("e:" + exactCounter);
         round.setGuessResultPartial("p:" + partialCounter);
 
